@@ -1,9 +1,10 @@
+import os
 import docx
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
-from docx.oxml import parse_xml, OxmlElement
-from docx.oxml.ns import nsdecls, qn
+from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
 
 def create_document():
     doc = docx.Document()
@@ -97,6 +98,24 @@ def create_document():
         run.font.color.rgb = RGBColor(0, 0, 0)
         return p
 
+    def add_image_figure(img_path, caption_text, width=Inches(6.0)):
+        if os.path.exists(img_path):
+            p_img = doc.add_paragraph()
+            p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p_img.paragraph_format.space_before = Pt(8)
+            p_img.paragraph_format.space_after = Pt(4)
+            p_img.add_run().add_picture(img_path, width=width)
+
+            p_cap = doc.add_paragraph()
+            p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p_cap.paragraph_format.space_after = Pt(14)
+            r = p_cap.add_run(caption_text)
+            r.font.name = 'Times New Roman'
+            r.font.size = Pt(11)
+            r.italic = True
+            r.bold = True
+            r.font.color.rgb = RGBColor(40, 40, 40)
+
     def set_cell_margins(cell, top=100, bottom=100, left=150, right=150):
         tcPr = cell._tc.get_or_add_tcPr()
         tcMar = parse_xml(f'<w:tcMar {nsdecls("w")}><w:top w:w="{top}" w:type="dxa"/><w:bottom w:w="{bottom}" w:type="dxa"/><w:left w:w="{left}" w:type="dxa"/><w:right w:w="{right}" w:type="dxa"/></w:tcMar>')
@@ -113,7 +132,7 @@ def create_document():
     meta_p = doc.add_paragraph()
     meta_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     meta_p.paragraph_format.space_after = Pt(36)
-    r_meta = meta_p.add_run("Course: MCA (Master of Computer Applications)\nSubject: Advanced Data Structures (ADS)\nPrimary Technology: Java 21, JavaFX, SQLite\nAcademic Year: 2026")
+    r_meta = meta_p.add_run("Course: MCA (Master of Computer Applications)\nSubject: Advanced Data Structures (ADS)\nPrimary Technology: Java 21, JavaFX 21, SQLite 3.45\nAcademic Year: 2026")
     r_meta.font.name = 'Times New Roman'
     r_meta.font.size = Pt(12)
 
@@ -131,11 +150,11 @@ def create_document():
     index_data = [
         ("1", "Introduction\n1.1 Problem definition\n1.2 Objectives of Project", "1"),
         ("2", "System Study\n2.1 Existing System\n2.2 Disadvantages of Existing system\n2.3 Proposed System", "3"),
-        ("3", "System Design\nFlow chart & Diagrams", "5"),
-        ("4", "Screen Layout / Screen shots", "8"),
-        ("5", "Conclusion", "12"),
-        ("6", "Future Enhancements", "13"),
-        ("7", "References", "14")
+        ("3", "System Design\nFlow chart & Diagrams\n  - Figure 3.1: System Architecture Diagram\n  - Figure 3.2: Operational System Flowchart\n  - Figure 3.3: Use Case Diagram\n  - Figure 3.4: SQLite E-R Database Schema", "5"),
+        ("4", "Screen Layout / Screen shots", "9"),
+        ("5", "Conclusion", "13"),
+        ("6", "Future Enhancements", "14"),
+        ("7", "References", "15")
     ]
 
     table = doc.add_table(rows=1, cols=3)
@@ -185,7 +204,6 @@ def create_document():
         for cell in row_cells:
             set_cell_margins(cell, top=100, bottom=100, left=120, right=120)
 
-    # Set table borders
     tblPr = table._tbl.tblPr
     borders = parse_xml(f'<w:tblBorders {nsdecls("w")}><w:top w:val="single" w:sz="6" w:space="0" w:color="000000"/><w:bottom w:val="single" w:sz="6" w:space="0" w:color="000000"/><w:left w:val="single" w:sz="6" w:space="0" w:color="000000"/><w:right w:val="single" w:sz="6" w:space="0" w:color="000000"/><w:insideH w:val="single" w:sz="4" w:space="0" w:color="CCCCCC"/><w:insideV w:val="single" w:sz="4" w:space="0" w:color="CCCCCC"/></w:tblBorders>')
     tblPr.append(borders)
@@ -246,30 +264,32 @@ def create_document():
     doc.add_page_break()
 
     # ==================== 3. SYSTEM DESIGN ====================
-    add_h1("3. System Design")
+    add_h1("3. System Design (Flow chart & Diagrams)")
     add_p("The system design of DS Studio adheres to modern software architecture standards, focusing on high cohesion, loose coupling, and clean separation between algorithm execution, user interface rendering, and data persistence.")
 
-    add_h2("3.1 Architectural Design Pattern")
-    add_p("DS Studio employs an Execution-Trace Snapshot Design Pattern. The application is divided into three primary layers:")
-    add_bullet("Pure Java classes (ArrayStructure, StackStructure, QueueStructure, CircularQueueStructure, SinglyLinkedListStructure, DoublyLinkedListStructure, CircularLinkedListStructure, and SortingAlgorithms). These classes have zero UI dependencies and return an OperationTrace object.", "1. Core Algorithm Layer: ")
-    add_bullet("OperationTrace and TraceStep classes that capture immutable snapshots of element arrays, pointer states, current highlighted lines of Java code, and time/space complexity metadata for every single step.", "2. Execution-Trace Engine: ")
-    add_bullet("Modern JavaFX desktop views (VisualizerLabView, CodeLabView, DSQuestView, QuizCenterView, etc.) styled with a dark obsidian theme that render canvas shapes and respond to user playback interactions.", "3. Presentation UI Layer: ")
+    add_h2("3.1 System Architecture Diagram")
+    add_p("DS Studio employs an Execution-Trace Snapshot Design Pattern. The application is organized into four interconnected layers, as depicted in Figure 3.1 below:")
+    add_bullet("Presentation Layer (JavaFX 21 Modular Client): Comprises the 13 navigation screens, animated canvas container, and synchronized code view.", "Layer 1: ")
+    add_bullet("Execution-Trace Snapshot Engine: Generates immutable OperationTrace and TraceStep objects containing pointer positions, highlighted indices, and active lines of code.", "Layer 2: ")
+    add_bullet("Core Algorithmic Layer: Pure Java classes (Array, Stack, Queue, Circular Queue, Linked Lists, Sorts) operating independently with zero UI dependencies.", "Layer 3: ")
+    add_bullet("Persistence Layer: Offline SQLite database caching student progress, XP, badges, and quiz attempts locally.", "Layer 4: ")
 
-    add_h2("3.2 System Flowchart & Operational Workflow")
-    add_p("The typical operational flow of DS Studio proceeds as follows:")
-    add_p("1. The student selects a target Data Structure (e.g., Circular Queue) and chooses an operation (e.g., Enqueue).")
-    add_p("2. The student enters an input value and clicks 'Execute'.")
-    add_p("3. The core Java structure executes the operation. If a boundary check fails (e.g., Queue Overflow), an error step is recorded. Otherwise, each pointer mutation is captured into a sequence of TraceStep objects.")
-    add_p("4. The Trace is delivered to the VisualizerLabView, resetting playback counters.")
-    add_p("5. The user can click 'Play' to watch automated step-by-step playback or use 'Step Next' and 'Step Prev' to inspect every micro-transition.")
-    add_p("6. Concurrently, the Java Code panel highlights the exact lines of code executing in that step.")
-    add_p("7. Upon completion of interactive operations or quizzes, the GamificationService awards XP and records progress in the local SQLite database.")
+    add_image_figure(r"d:\ads\diagrams\architecture_diagram.png", "Figure 3.1: DS Studio Layered System Architecture", width=Inches(6.2))
 
-    add_h2("3.3 Database Design & Entity Relationship")
-    add_p("The local SQLite database (~/.dsstudio/ds_studio.db) maintains three core entities:")
-    add_bullet("Stores username, current level, level title, total lifetime XP, and active consecutive study streak.", "Profile Table: ")
-    add_bullet("Records topic, score, total questions, percentage accuracy, XP earned, and timestamp for every quiz completed.", "Quiz Attempts Table: ")
-    add_bullet("Tracks badge identifiers, title, description, and unlocked boolean status.", "Achievements Table: ")
+    add_h2("3.2 Operational System Flowchart")
+    add_p("Figure 3.2 illustrates the end-to-end operational flowchart of DS Studio from application startup to algorithm execution, snapshot rendering, and progress persistence.")
+
+    add_image_figure(r"d:\ads\diagrams\system_flowchart.png", "Figure 3.2: DS Studio Operational System Flowchart", width=Inches(5.0))
+
+    add_h2("3.3 Use Case Diagram")
+    add_p("Figure 3.3 presents the formal Use Case Diagram representing the interactions between the primary actor (Student / MCA Learner) and the core capabilities provided by the DS Studio desktop platform.")
+
+    add_image_figure(r"d:\ads\diagrams\usecase_diagram.png", "Figure 3.3: DS Studio Use Case Diagram", width=Inches(5.8))
+
+    add_h2("3.4 Database Design & Entity-Relationship (E-R) Diagram")
+    add_p("The application utilizes an embedded SQLite relational database (ds_studio.db) stored locally in the student's home directory. Figure 3.4 illustrates the Entity-Relationship (E-R) diagram connecting the PROFILE, QUIZ_ATTEMPTS, and ACHIEVEMENTS entities.")
+
+    add_image_figure(r"d:\ads\diagrams\er_diagram.png", "Figure 3.4: SQLite Database Entity-Relationship (E-R) Diagram", width=Inches(6.0))
 
     doc.add_page_break()
 
@@ -343,9 +363,16 @@ def create_document():
     add_p("5. Horstmann, C. S. (2022). Core Java Volume I – Fundamentals (12th ed.). Prentice Hall.")
     add_p("6. SQLite Development Team. (2024). SQLite Database Engine Architecture & JDBC Driver Documentation. https://www.sqlite.org")
 
-    output_path = r"d:\ads\DS_Studio_Project_Documentation.docx"
+    output_path = r"d:\ads\DS_Studio_MCA_Project_Documentation.docx"
     doc.save(output_path)
-    print(f"Document successfully created at {output_path}")
+    print(f"Document with all diagrams successfully created at {output_path}")
+
+    # Also try to update the original file if not locked
+    try:
+        doc.save(r"d:\ads\DS_Studio_Project_Documentation.docx")
+        print("Also updated d:\\ads\\DS_Studio_Project_Documentation.docx")
+    except Exception:
+        print("Note: DS_Studio_Project_Documentation.docx is currently open in Microsoft Word. Saved to DS_Studio_MCA_Project_Documentation.docx")
 
 if __name__ == "__main__":
     create_document()
