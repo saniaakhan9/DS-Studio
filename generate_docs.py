@@ -274,22 +274,22 @@ def create_document():
     add_bullet("Core Algorithmic Layer: Pure Java classes (Array, Stack, Queue, Circular Queue, Linked Lists, Sorts) operating independently with zero UI dependencies.", "Layer 3: ")
     add_bullet("Persistence Layer: Offline SQLite database caching student progress, XP, badges, and quiz attempts locally.", "Layer 4: ")
 
-    add_image_figure(r"d:\ads\diagrams\architecture_diagram.png", "Figure 3.1: DS Studio Layered System Architecture", width=Inches(6.2))
+    add_image_figure(r"d:\ads\diagrams\staruml_architecture.png", "Figure 3.1: DS Studio Component & Package Architecture (StarUML Style)", width=Inches(6.2))
 
     add_h2("3.2 Operational System Flowchart")
-    add_p("Figure 3.2 illustrates the end-to-end operational flowchart of DS Studio from application startup to algorithm execution, snapshot rendering, and progress persistence.")
+    add_p("Figure 3.2 illustrates the end-to-end operational activity flowchart of DS Studio from application startup to algorithm execution, snapshot rendering, and progress persistence.")
 
-    add_image_figure(r"d:\ads\diagrams\system_flowchart.png", "Figure 3.2: DS Studio Operational System Flowchart", width=Inches(5.0))
+    add_image_figure(r"d:\ads\diagrams\staruml_flowchart.png", "Figure 3.2: DS Studio Operational Activity Flowchart (StarUML Style)", width=Inches(4.8))
 
     add_h2("3.3 Use Case Diagram")
     add_p("Figure 3.3 presents the formal Use Case Diagram representing the interactions between the primary actor (Student / MCA Learner) and the core capabilities provided by the DS Studio desktop platform.")
 
-    add_image_figure(r"d:\ads\diagrams\usecase_diagram.png", "Figure 3.3: DS Studio Use Case Diagram", width=Inches(5.8))
+    add_image_figure(r"d:\ads\diagrams\staruml_usecase.png", "Figure 3.3: DS Studio Use Case Diagram (StarUML Style)", width=Inches(6.0))
 
     add_h2("3.4 Database Design & Entity-Relationship (E-R) Diagram")
-    add_p("The application utilizes an embedded SQLite relational database (ds_studio.db) stored locally in the student's home directory. Figure 3.4 illustrates the Entity-Relationship (E-R) diagram connecting the PROFILE, QUIZ_ATTEMPTS, and ACHIEVEMENTS entities.")
+    add_p("The application utilizes an embedded SQLite relational database (ds_studio.db) stored locally in the student's home directory. Figure 3.4 illustrates the Entity-Relationship (E-R) diagram connecting the PROFILE, QUIZ_ATTEMPTS, ACHIEVEMENTS, and LESSON_PROGRESS entities.")
 
-    add_image_figure(r"d:\ads\diagrams\er_diagram.png", "Figure 3.4: SQLite Database Entity-Relationship (E-R) Diagram", width=Inches(6.0))
+    add_image_figure(r"d:\ads\diagrams\staruml_erd.png", "Figure 3.4: SQLite Database Entity-Relationship Schema (StarUML Style)", width=Inches(6.2))
 
     doc.add_page_break()
 
@@ -363,16 +363,17 @@ def create_document():
     add_p("5. Horstmann, C. S. (2022). Core Java Volume I – Fundamentals (12th ed.). Prentice Hall.")
     add_p("6. SQLite Development Team. (2024). SQLite Database Engine Architecture & JDBC Driver Documentation. https://www.sqlite.org")
 
-    output_path = r"d:\ads\DS_Studio_MCA_Project_Documentation.docx"
+    output_path = r"d:\ads\DS_Studio_StarUML_Project_Documentation.docx"
     doc.save(output_path)
-    print(f"Document with all diagrams successfully created at {output_path}")
+    print(f"Document with all StarUML diagrams successfully created at {output_path}")
 
-    # Also try to update the original file if not locked
-    try:
-        doc.save(r"d:\ads\DS_Studio_Project_Documentation.docx")
-        print("Also updated d:\\ads\\DS_Studio_Project_Documentation.docx")
-    except Exception:
-        print("Note: DS_Studio_Project_Documentation.docx is currently open in Microsoft Word. Saved to DS_Studio_MCA_Project_Documentation.docx")
+    # Also try to update other files if not locked
+    for alt_path in [r"d:\ads\DS_Studio_MCA_Project_Documentation.docx", r"d:\ads\DS_Studio_Project_Documentation.docx"]:
+        try:
+            doc.save(alt_path)
+            print(f"Also updated {alt_path}")
+        except Exception:
+            pass
 
 if __name__ == "__main__":
     create_document()
