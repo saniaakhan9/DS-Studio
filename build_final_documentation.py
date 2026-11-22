@@ -2,7 +2,7 @@ import os
 import docx
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
 
@@ -108,7 +108,7 @@ def build_final_documentation():
         run.font.color.rgb = RGBColor(20, 20, 20)
         return p
 
-    def add_image_figure(img_path, caption_text, width=Inches(6.2)):
+    def add_image_figure(img_path, caption_text, width=Inches(6.0)):
         if os.path.exists(img_path):
             p_img = doc.add_paragraph()
             p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -170,10 +170,10 @@ def build_final_documentation():
         ("1", "Introduction\n1.1 Problem definition\n1.2 Objectives of Project", "1"),
         ("2", "System Study\n2.1 Existing System\n2.2 Disadvantages of Existing system\n2.3 Proposed System", "3"),
         ("3", "System Design\nFlow chart & Diagrams\n  • Figure 3.1: StarUML System Architecture (Component & Package)\n  • Figure 3.2: StarUML Operational System Flowchart & Activity\n  • Figure 3.3: StarUML Use Case Diagram (Actor & Capabilities)\n  • Figure 3.4: StarUML SQLite Relational Entity-Relationship (ERD)", "6"),
-        ("4", "Screen Layout / Screen shots\n4.1 Dashboard View\n4.2 Interactive Visualizer Lab View\n4.3 Synchronized Java Code Lab View\n4.4 Algorithms Sorting Lab View\n4.5 DS Quest Mission Control\n4.6 Examination Quiz Centre\n4.7 Mastery Progress & Analytics View", "11"),
-        ("5", "Conclusion", "16"),
-        ("6", "Future Enhancements", "17"),
-        ("7", "References", "18")
+        ("4", "Screen Layout / Screen shots\n  • Figure 4.1: Dashboard View Screenshot\n  • Figure 4.2: Visualizer Lab View Screenshot\n  • Figure 4.3: Java Code Lab View Screenshot\n  • Figure 4.4: Algorithms Sorting View Screenshot\n  • Figure 4.5: DS Quest Challenge View Screenshot\n  • Figure 4.6: Examination Quiz Centre Screenshot\n  • Figure 4.7: Mastery Progress & Analytics Screenshot\n  • Figure 4.8: Curriculum & Viva Guide Screenshot\n  • Figure 4.9: Complexity Matrix Guide Screenshot", "11"),
+        ("5", "Conclusion", "21"),
+        ("6", "Future Enhancements", "22"),
+        ("7", "References", "23")
     ]
 
     table = doc.add_table(rows=1, cols=3)
@@ -314,31 +314,43 @@ def build_final_documentation():
 
     # ==================== 4. SCREEN LAYOUT / SCREEN SHOTS ====================
     add_h1("4. Screen Layout / Screen shots")
-    add_p("DS Studio incorporates an ergonomic, dark-themed user interface structured into 13 dedicated sections accessible via a permanent sidebar navigation bar.")
+    add_p("DS Studio incorporates an ergonomic, dark-themed user interface structured into 13 dedicated sections accessible via a permanent sidebar navigation bar. Below are actual high-resolution screenshots captured directly from the running JavaFX application at 1280x800 resolution:")
 
     add_h2("4.1 Dashboard View")
-    add_p("The Dashboard serves as the central command cockpit. It features:")
-    add_bullet("Displays student greeting, motivational tagline, and an immediate 'Launch Visualizer Lab' call-to-action button.", "Welcome Hero Banner: ")
-    add_bullet("Four synchronized metric cards displaying Total XP Earned, Daily Streak (in days), Active Linear Modules (7 modules), and Available Sorts/Searches (5 algorithms).", "Real-Time Metric Cards: ")
-    add_bullet("Presents a rotating conceptual challenge with XP rewards.", "Daily Challenge Card: ")
-    add_bullet("One-click shortcut chips enabling instantaneous launch of specific visualizer structures.", "Quick Launchpad: ")
+    add_p("The Dashboard serves as the central command cockpit. It presents the student greeting banner, lifetime XP analytics, consecutive study streak, active data structure modules, a daily concept challenge, and quick launchpad chips.")
+    add_image_figure(r"d:\ads\screenshots\screenshot_dashboard.png", "Figure 4.1: DS Studio Dashboard Cockpit & Learning Metrics", width=Inches(6.0))
 
     add_h2("4.2 Interactive Visualizer Lab View")
-    add_p("The Visualizer Lab is the centerpiece of the educational suite. It contains:")
-    add_bullet("Data structure selector, operation selector, parameter value field, target index field, and the 'Execute' trigger button.", "Input & Operation Toolbar: ")
-    add_bullet("Play/Pause toggle button, Step Next, Step Prev, Reset, and a 0.5x / 1.0x / 2.0x playback speed slider.", "Playback Animation Controls: ")
-    add_bullet("Interactive centered canvas dynamically rendering array cells, stack columns, queue slots, or linked list node blocks with pointer arrows (HEAD, TAIL, TOP, FRONT, REAR).", "Visualizer Canvas: ")
-    add_bullet("Active time complexity badge, auxiliary space complexity badge, step counter (e.g., Step 3 / 8), and detailed textual explanations.", "Step Status & Metadata: ")
-    add_bullet("Dedicated code panel highlighting active lines of real Java code corresponding to the current visualizer state.", "Synchronized Code Panel: ")
+    add_p("The Visualizer Lab is the centerpiece of the educational suite. It contains the structure dropdown, operation selector, parameter input fields, execution button, playback animation toolbar (Play, Pause, Step Next, Step Prev, Speed Slider), centered canvas rendering memory nodes with pointer markers, and the synchronized real Java code panel.")
+    add_image_figure(r"d:\ads\screenshots\screenshot_visualizer_lab.png", "Figure 4.2: Interactive Visualizer Lab (Array Insertion & Pointer Trace)", width=Inches(6.0))
 
-    add_h2("4.3 Java Code Lab View")
-    add_p("The Code Lab provides verified, standard Java implementations designed for academic laboratory examinations. It includes a module selector, formatted code container with a title bar, and a 'Copy Java Code' button integrated with the operating system clipboard.")
+    add_h2("4.3 Synchronized Java Code Lab View")
+    add_p("The Code Lab provides verified, standard Java implementations designed for academic laboratory examinations. It includes a module selector, formatted code container with an IDE-style window bar, complexity badges, and a one-click clipboard copy feature.")
+    add_image_figure(r"d:\ads\screenshots\screenshot_java_code_lab.png", "Figure 4.3: Java Code Lab (Verified Academic Implementations)", width=Inches(6.0))
 
-    add_h2("4.4 DS Quest & Examination Quiz Centre Views")
-    add_p("DS Quest delivers challenge-based gamification across five categories (Concept, Output Prediction, Debug, Dry Run, and Complexity Quests). The Quiz Centre provides a 5-minute timed examination environment featuring an urgent color-shifting countdown timer, an interactive question palette grid, and automatic score logging to SQLite.")
+    add_h2("4.4 Algorithms Sorting Lab View")
+    add_p("The Algorithms section features dynamic visual animations of sorting algorithms (Bubble Sort with early exit, Selection Sort, and Insertion Sort) with custom user array input, gradient height bars, highlighted comparison indicators, and synchronized Java source code.")
+    add_image_figure(r"d:\ads\screenshots\screenshot_algorithms.png", "Figure 4.4: Algorithms Sorting Visualizer Lab", width=Inches(6.0))
 
-    add_h2("4.5 Mastery Progress & Analytics View")
-    add_p("The Progress View presents student level progression, earned versus locked badge milestones, and historical quiz attempts queried directly from the local SQLite database.")
+    add_h2("4.5 DS Quest Mission Control")
+    add_p("DS Quest delivers challenge-based gamification across five categories (Concept, Output Prediction, Debug, Dry Run, and Complexity Quests). Students select answers via interactive cards, submit their reasoning, receive immediate XP rewards, and view comprehensive logic explanations.")
+    add_image_figure(r"d:\ads\screenshots\screenshot_ds_quest.png", "Figure 4.5: DS Quest Gamified Challenge Mission Control", width=Inches(6.0))
+
+    add_h2("4.6 Examination Quiz Centre")
+    add_p("The Quiz Centre replicates university and competitive examination conditions with a 5-minute timed exam simulator, an urgent color-shifting countdown timer, a dynamic question palette grid, and automatic score grading persisted to SQLite.")
+    add_image_figure(r"d:\ads\screenshots\screenshot_quiz_centre.png", "Figure 4.6: Examination Quiz Centre Simulator", width=Inches(6.0))
+
+    add_h2("4.7 Mastery Progress & Analytics View")
+    add_p("The Progress View presents the student's mastery analytics, level titles, earned glowing badges versus locked milestones, and recent exam quiz attempts queried live from the local SQLite database.")
+    add_image_figure(r"d:\ads\screenshots\screenshot_my_progress.png", "Figure 4.7: Student Mastery Analytics & SQLite Quiz History", width=Inches(6.0))
+
+    add_h2("4.8 Academic Curriculum & Viva Guide")
+    add_p("The Learn View provides an in-depth textbook-grade curriculum covering formal CS definitions, cache-friendly memory models, real-world software engineering applications, asymptotic complexity matrices, common pitfalls, and viva interview questions.")
+    add_image_figure(r"d:\ads\screenshots\screenshot_learn_curriculum.png", "Figure 4.8: Academic Curriculum & Viva Voce Preparation Guide", width=Inches(6.0))
+
+    add_h2("4.9 Asymptotic Master Complexity Matrix")
+    add_p("The Complexity Guide provides a comprehensive Big-O comparison matrix detailing Access, Search, Insertion, Deletion, and Space bounds across all linear data structures alongside formal definitions of Big-O (O), Big-Omega (Ω), and Big-Theta (Θ).")
+    add_image_figure(r"d:\ads\screenshots\screenshot_complexity_guide.png", "Figure 4.9: Asymptotic Master Complexity Reference Matrix", width=Inches(6.0))
 
     doc.add_page_break()
 
@@ -372,12 +384,12 @@ def build_final_documentation():
     add_p("7. SQLite Development Team. (2024). SQLite Architecture, Query Processing and JDBC Integration. https://www.sqlite.org")
     add_p("8. IEEE Computer Society. (2020). Guide to the Software Engineering Body of Knowledge (SWEBOK Guide v3.0). IEEE.")
 
-    output_path = r"d:\ads\DS_Studio_Final_Project_Documentation.docx"
+    output_path = r"d:\ads\DS_Studio_Complete_Documentation.docx"
     doc.save(output_path)
-    print(f"Final publication-grade documentation successfully created at {output_path}")
+    print(f"Final publication-grade documentation with diagrams and screenshots successfully created at {output_path}")
 
     # Also try to update other docx files if not locked
-    for alt_path in [r"d:\ads\DS_Studio_StarUML_Project_Documentation.docx", r"d:\ads\DS_Studio_MCA_Project_Documentation.docx", r"d:\ads\DS_Studio_Project_Documentation.docx"]:
+    for alt_path in [r"d:\ads\DS_Studio_Final_Project_Documentation.docx", r"d:\ads\DS_Studio_StarUML_Project_Documentation.docx", r"d:\ads\DS_Studio_MCA_Project_Documentation.docx", r"d:\ads\DS_Studio_Project_Documentation.docx"]:
         try:
             doc.save(alt_path)
             print(f"Also updated {alt_path}")
